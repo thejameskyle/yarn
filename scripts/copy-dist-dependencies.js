@@ -8,19 +8,21 @@ const os = require('os');
 
 const basedir = path.join(__dirname, '../');
 const config = createWebpackConfig({
-  entry: [path.join(basedir, 'bin/test.js')],
+  entry: [path.join(basedir, 'bin/yarn.js')],
   output: {
     filename: `yarn-${Date.now()}.js`,
     path: os.tmpdir()
   }
 });
 config.bail = true;
-console.log(config);
+// console.log(config);
 const compiler = webpack(config);
 
 console.log(path.join(basedir, 'bin/yarn.js'));
 
 compiler.run((err, stats) => {
+  console.log(err, stats);
+
   const {fileDependencies} = stats.compilation;
 
   console.log(fileDependencies);
