@@ -7,15 +7,29 @@ module.exports = function createWebpackConfig(opts) {
     // devtool: 'inline-source-map',
     entry: opts.entry,
     module: {
-      loaders: [{
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel',
-        query: opts.babelQuery || '',
-      }, {
+      loaders: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          loader: 'strip-unix-bin-string-loader',
+          enforce: 'pre'
+        },
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          loader: 'babel',
+          query: opts.babelQuery || '',
+        }, 
+        {
         test: /\.json$/,
         loader: 'json',
-      }],
+        }
+      ],
+    },
+    resolveLoader: {
+      alias: {
+        'strip-unix-bin-string-loader': require.resolve("./strip-unix-bin-string-loader")
+      }
     },
     plugins: [
       new webpack.BannerPlugin({
